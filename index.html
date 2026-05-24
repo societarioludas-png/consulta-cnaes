@@ -3,284 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Consulta CNAE online gratuita. Verifique MEI, Simples Nacional, Anexo e alíquotas. Ferramenta completa da Ludas Legal.">
-    <meta name="keywords" content="consulta CNAE, CNAE MEI, tabela CNAE, simples nacional CNAE, alíquotas CNAE, abrir empresa CNAE">
-    <meta name="robots" content="index, follow">
-    
     <title>Consulta CNAE - Ludas Legal</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1e40af; --bg: #f8fafc; --card: #ffffff; --text: #1e293b;
-            --muted: #64748b; --border: #cbd5e1; --success-bg: #dcfce7;
-            --success-text: #166534; --danger-bg: #fee2e2; --danger-text: #991b1b;
-            --warning-bg: #ffedd5; --warning-text: #9a3412;
-            --btn-hover: #f1f5f9;
-        }
-        * { box-sizing: border-box; }
-        body { margin: 0; padding: 40px 20px; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.5; }
-        .container { max-width: 900px; margin: auto; }
-        header { text-align: center; margin-bottom: 32px; }
-        h1 { margin: 0 0 8px 0; color: var(--primary); font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
-        .subtitle { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
-        .search-container {
-            display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border);
-            border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; transition: all 0.2s ease;
-        }
-        .search-container:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1); }
-        .search-container input { border: none; outline: none; flex: 1; font-size: 16px; font-family: inherit; color: var(--text); }
-        .filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 32px; }
-        .btn-cat {
-            padding: 8px 16px; border-radius: 50px; border: 1px solid #e2e8f0; background: #fff;
-            font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .2s;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .btn-cat:hover, .btn-cat.ativo { background: var(--primary); color: #fff; border-color: var(--primary); }
-        #lista { display: block; min-height: 200px; }
-        .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; position: relative; border-left: 4px solid transparent; animation: fadeUp .4s ease forwards; }
-        .card.destaque-vedado { border-left-color: var(--danger-text); background-color: #fffafb; }
-        .card.destaque-fator-r { border-left-color: var(--warning-text); }
-        .card-header { padding: 12px 24px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
-        .cnae-badge { background: #fff; border: 1px solid #e2e8f0; color: var(--text); font-weight: 700; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 13px; }
-        .cat-badge { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
-        .card-body { padding: 20px 24px; }
-        .descricao { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
-        .sub-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; font-style: italic;}
-        .card-actions { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-acao { 
-            padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: #fff;
-            font-size: 12px; font-weight: 600; color: var(--text); cursor: pointer; transition: all .2s;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .btn-acao:hover { background: var(--btn-hover); border-color: #94a3b8; }
-        .btn-acao i { color: var(--primary); }
-        .detalhes-box {
-            display: none; margin-bottom: 20px; padding: 16px; background: #f8fafc; 
-            border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; color: #334155; line-height: 1.6;
-            animation: fadeIn 0.3s ease;
-        }
-        .detalhes-box p { margin: 0 0 4px 0; }
-        .detalhes-box p:last-child { margin: 0; }
-        .detalhes-box strong { color: var(--text); }
-        .tax-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e2e8f0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-        .tax-cell { background: #fff; padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; }
-        .tax-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-        .tax-value { font-weight: 600; font-size: 14px; color: var(--text); }
-        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .bg-green { background: var(--success-bg); color: var(--success-text); }
-        .bg-red { background: var(--danger-bg); color: var(--danger-text); }
-        .fator-r-tag { font-size: 11px; color: var(--warning-text); background: var(--warning-bg); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; font-weight: 600; }
-        footer { margin-top: 40px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px; font-size: 12px; color: var(--muted); }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @media (max-width: 650px) { .tax-grid { grid-template-columns: repeat(2, 1fr); } }
+        :root { --primary: #1e40af; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; padding: 20px; color: #1e293b; }
+        .container { max-width: 800px; margin: auto; }
+        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .detalhes-box { display: none; margin-top: 15px; padding: 15px; background: #f1f5f9; border-radius: 6px; font-size: 14px; }
+        button { cursor: pointer; padding: 8px 16px; border: none; border-radius: 4px; background: var(--primary); color: white; font-weight: 600; margin-top: 10px; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #cbd5e1; border-radius: 6px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>Consulta de CNAE</h1>
-        <p class="subtitle">Pesquise por atividade, verifique MEI, Simples Nacional e Alíquotas.</p>
-    </header>
-
-    <div class="search-container">
-        <i class="fas fa-search" style="color: var(--muted)"></i>
-        <input id="campoBusca" type="text" placeholder="Ex: médico, comércio, pintura, consultoria..." oninput="filtrarGeral()">
-    </div>
-
-    <div class="filters">
-        <button class="btn-cat" onclick="toggleCategoria('Administrativo', this)"><i class="fas fa-briefcase"></i> Administrativo</button>
-        <button class="btn-cat" onclick="toggleCategoria('Tecnologia', this)"><i class="fas fa-laptop-code"></i> Tecnologia</button>
-        <button class="btn-cat" onclick="toggleCategoria('Educação', this)"><i class="fas fa-graduation-cap"></i> Educação</button>
-        <button class="btn-cat" onclick="toggleCategoria('Jurídico', this)"><i class="fas fa-balance-scale"></i> Jurídico</button>
-        <button class="btn-cat" onclick="toggleCategoria('Saúde', this)"><i class="fas fa-user-doctor"></i> Saúde</button>
-        <button class="btn-cat" onclick="toggleCategoria('Comércio', this)"><i class="fas fa-store"></i> Comércio</button>
-        <button class="btn-cat" onclick="toggleCategoria('Alimentação', this)"><i class="fas fa-utensils"></i> Alimentação</button>
-        <button class="btn-cat" onclick="toggleCategoria('Engenharia/Arq', this)"><i class="fas fa-hard-hat"></i> Engenharia/Arq</button>
-        <button class="btn-cat" onclick="toggleCategoria('Estética', this)"><i class="fas fa-spa"></i> Estética</button>
-        <button class="btn-cat" onclick="toggleCategoria('Transporte', this)"><i class="fas fa-truck"></i> Transporte</button>
-        <button class="btn-cat" onclick="toggleCategoria('Indústria', this)"><i class="fas fa-industry"></i> Indústria</button>
-        <button class="btn-cat" onclick="toggleCategoria('Automotivo', this)"><i class="fas fa-car"></i> Automotivo</button>
-        <button class="btn-cat" onclick="toggleCategoria('Publicidade', this)"><i class="fas fa-bullhorn"></i> Publicidade</button>
-        <button class="btn-cat" onclick="toggleCategoria('Reparação', this)"><i class="fas fa-tools"></i> Reparação</button>
-    </div>
-
-    <div id="lista">
-        <div style="text-align:center; padding:40px; color:var(--muted);">Carregando atividades...</div>
-    </div>
-
-    <footer>
-        <p><strong>Aviso:</strong> A Ludas Legal não se responsabiliza por decisões tomadas com base nestas informações.</p>
-    </footer>
+    <input type="text" id="campoBusca" placeholder="Pesquisar CNAE..." oninput="filtrar()">
+    <div id="lista"></div>
 </div>
 
 <script>
     const dados = [
-        // ================= CASOS ESPECIAIS & PERIGOSOS =================
-        {c: "7820-5/00", d: "Locação de mão de obra temporária", sub: "❗ Exige comprovação de Capital Social de no mínimo 500 vezes o salário mínimo nacional.", cat: "Administrativo", anexo: "Anexo IV", aliq: "4,5%", fatorR: false, mei: false, simples: true},
-        {c: "8011-1/01", d: "Atividades de vigilância e segurança privada", sub: "❗ Exige capital mínimo de 100.000 UFIRs (aprox. R$ 110.000,00).", cat: "Administrativo", anexo: "Anexo IV", aliq: "4,5%", fatorR: false, mei: false, simples: true},
-        {c: "8020-0/01", d: "Atividades de monitoramento de sistemas de segurança eletrônico", sub: "❗ Exige capital mínimo de 100.000 UFIRs (aprox. R$ 110.000,00).", cat: "Administrativo", anexo: "Anexo IV", aliq: "4,5%", fatorR: false, mei: false, simples: true},
-        {c: "8111-7/00", d: "Serviços combinados para apoio a edifícios, exceto condomínios prediais", sub: "❗ CUIDADO: Serviços de portaria/zeladoria (cessão de mão de obra) são vedados ao Simples. Não inclua no objeto social explicitamente se for optante.", cat: "Administrativo", anexo: "Anexo IV", aliq: "4,5%", fatorR: false, mei: false, simples: true},
-        
-        // ================= TECNOLOGIA =================
-        {c: "6201-5/01", d: "Desenvolvimento de programas de computador sob encomenda", sub: "Programação de sistemas.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6202-3/00", d: "Desenvolvimento e licenciamento de programas de computador customizáveis", sub: "Programação.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6203-1/00", d: "Desenvolvimento e licenciamento de programas de computador Não-customizáveis", sub: "Programação.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6204-0/00", d: "Consultoria em tecnologia da informação", sub: "Consultoria TI.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet", sub: "Hospedagem, cloud.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6319-4/00", d: "Portais, provedores de conteúdo e outros serviços de informação na internet", sub: "Sites de informação.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "6201-5/02", d: "Web design", sub: "Criação de sites e layouts.", cat: "Tecnologia", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "8299-7/99", d: "Outras atividades de serviços prestados principalmente às empresas (Computação gráfica)", sub: "❗ ALTO RISCO dependendo da classificação municipal.", cat: "Tecnologia", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: false, simples: true},
-        {c: "6209-1/00", d: "Suporte técnico, manutenção e outros serviços em tecnologia da informação", sub: "Help desk, suporte.", cat: "Tecnologia", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: false, simples: true},
-        
-        // ================= CORRETOR DE IMÓVEIS (CRECI) =================
-        {c: "6821-8/01", d: "Corretagem na compra e venda e avaliação de imóveis", sub: "❗ Exige registro no CRECI.", cat: "Administrativo", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: false, simples: true},
-        
-        // ================= APOIO ADMINISTRATIVO / FINANCEIRO =================
-        {c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial", sub: "❗ Conselho: CORE + CRA.", cat: "Administrativo", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: false, simples: true},
-        {c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo", sub: "Apoio geral / Coworking.", cat: "Administrativo", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: false, simples: true},
-        {c: "8219-9/99", d: "Preparação de documentos e serviços de apoio administrativo", sub: "Secretariado remoto.", cat: "Administrativo", anexo: "Anexo III", aliq: "6,0%", fatorR: false, mei: true, simples: true},
-        
-        // ================= SAÚDE =================
-        {c: "8630-5/99", d: "Atividades de atenção ambulatorial não especificadas", sub: "❗ Exige objeto social específico. Conselho: CRM.", cat: "Saúde", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        {c: "8650-0/05", d: "Atividades de terapia ocupacional", sub: "❗ Conselho: CREFITO.", cat: "Saúde", anexo: "Anexo V", aliq: "15,5%", fatorR: true, mei: false, simples: true},
-        
-        // ================= COMÉRCIO / ALIMENTAÇÃO =================
-        {c: "4712-1/00", d: "Comércio varejista de mercadorias com predominância de produtos alimentícios", sub: "Minimercados.", cat: "Alimentação", anexo: "Anexo I", aliq: "4,0%", fatorR: false, mei: true, simples: true},
-        {c: "4723-7/00", d: "Comércio varejista de bebidas (alcoólicas e não alcoólicas)", sub: "❗ Atacado de bebidas alcoólicas é VEDADO ao Simples.", cat: "Comércio", anexo: "Anexo I", aliq: "4,0%", fatorR: false, mei: true, simples: true}
+        {c: "6201-5/01", d: "Desenvolvimento de programas", cat: "Tecnologia"},
+        {c: "7020-4/00", d: "Consultoria em gestão", cat: "Administrativo"},
+        {c: "8630-5/99", d: "Atividades de atenção ambulatorial", cat: "Saúde"}
     ];
 
-    let categoriaAtual = "";
-
-    // Função para renderizar os cards
-    function renderizarLista(itens) {
+    function renderizar(lista) {
         const container = document.getElementById("lista");
         container.innerHTML = "";
 
-        if (itens.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--muted);">Nenhum CNAE encontrado.</div>';
-            return;
-        }
-
-        itens.forEach((item, index) => {
-            let classEspecial = "";
-            let tagEspecial = "";
-            
-            if (!item.simples) {
-                classEspecial = "destaque-vedado";
-            } else if (item.fatorR) {
-                classEspecial = "destaque-fator-r";
-                tagEspecial = '<span class="fator-r-tag">Sujeito ao Fator R</span>';
-            }
-
-            const html = `
-                <div class="card ${classEspecial}">
-                    <div class="card-header">
-                        <span class="cnae-badge">${item.c}</span>
-                        <span class="cat-badge">${item.cat}</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="descricao">${item.d}</div>
-                        <div class="sub-desc">${item.sub} ${tagEspecial}</div>
-                        
-                        <div class="card-actions">
-                            <button class="btn-acao" onclick="toggleDetalhes(${index})">
-                                <i class="fas fa-info-circle"></i> Ver Detalhes
-                            </button>
-                            <button class="btn-acao" onclick="abrirPaginaAtividade('${item.c}')">
-                                <i class="fas fa-external-link-alt"></i> Abrir Página
-                            </button>
-                        </div>
-
-                        <div class="detalhes-box" id="detalhes-${index}">
-                            <p><strong>Mais informações sobre o CNAE ${item.c}:</strong></p>
-                            <p>Aqui você pode incluir informações adicionais do banco de dados sobre obrigações acessórias, se exige licenciamento da CETESB, Vigilância Sanitária, Corpo de Bombeiros ou se pode usar o endereço residencial (home office) para esta atividade específica.</p>
-                        </div>
-                        
-                        <div class="tax-grid">
-                            <div class="tax-cell">
-                                <span class="tax-label">Simples Nacional</span>
-                                <span class="tax-value status-badge ${item.simples ? 'bg-green' : 'bg-red'}">${item.simples ? 'Permitido' : 'Vedado'}</span>
-                            </div>
-                            <div class="tax-cell">
-                                <span class="tax-label">Pode ser MEI?</span>
-                                <span class="tax-value status-badge ${item.mei ? 'bg-green' : 'bg-red'}">${item.mei ? 'Sim' : 'Não'}</span>
-                            </div>
-                            <div class="tax-cell">
-                                <span class="tax-label">Anexo</span>
-                                <span class="tax-value">${item.anexo}</span>
-                            </div>
-                            <div class="tax-cell">
-                                <span class="tax-label">Alíquota (Aprox)</span>
-                                <span class="tax-value">${item.aliq}</span>
-                            </div>
-                        </div>
-                    </div>
+        lista.forEach((item, index) => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <strong>${item.c}</strong> - ${item.d} <br>
+                <button onclick="toggleDetalhes(${index})"><i class="fas fa-info"></i> Detalhes</button>
+                <button onclick="abrirPagina('${item.c}')"><i class="fas fa-link"></i> Abrir</button>
+                <div id="det-${index}" class="detalhes-box">
+                    Informações detalhadas sobre a atividade ${item.c}. 
+                    Aqui entram os dados de licenciamento e exigências específicas.
                 </div>
             `;
-            container.innerHTML += html;
+            container.appendChild(card);
         });
     }
 
-    // Função de filtro por texto
-    function filtrarGeral() {
-        const termo = document.getElementById("campoBusca").value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        
-        const filtrados = dados.filter(item => {
-            const texto = (item.c + " " + item.d + " " + item.sub).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const bateTexto = texto.includes(termo);
-            const bateCategoria = categoriaAtual === "" || item.cat === categoriaAtual;
-            
-            return bateTexto && bateCategoria;
-        });
+    // Funções globais obrigatórias para os botões funcionarem
+    window.toggleDetalhes = function(index) {
+        const el = document.getElementById('det-' + index);
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    };
 
-        renderizarLista(filtrados);
+    window.abrirPagina = function(codigo) {
+        const url = "/cnae/" + codigo.replace(/[^0-9]/g, '');
+        window.open(url, '_blank');
+    };
+
+    function filtrar() {
+        const termo = document.getElementById("campoBusca").value.toLowerCase();
+        const filtrados = dados.filter(i => 
+            i.d.toLowerCase().includes(termo) || i.c.includes(termo)
+        );
+        renderizar(filtrados);
     }
 
-    // Função de filtro por botões
-    function toggleCategoria(catSelecionada, btnElement) {
-        if (categoriaAtual === catSelecionada) {
-            categoriaAtual = "";
-            btnElement.classList.remove("ativo");
-        } else {
-            document.querySelectorAll(".btn-cat").forEach(b => b.classList.remove("ativo"));
-            btnElement.classList.add("ativo");
-            categoriaAtual = catSelecionada;
-        }
-        filtrarGeral();
-    }
-
-    // Função para mostrar/esconder detalhes
-    function toggleDetalhes(index) {
-        const box = document.getElementById(`detalhes-${index}`);
-        if (box.style.display === "block") {
-            box.style.display = "none";
-        } else {
-            box.style.display = "block";
-        }
-    }
-
-    // Função para abrir página individual do CNAE
-    function abrirPaginaAtividade(codigoCnae) {
-        // Remove traços e barras para formatar a URL limpa (Ex: 7820500)
-        const codigoLimpo = codigoCnae.replace(/[^0-9]/g, '');
-        
-        // Aqui você direciona para a URL do seu site. 
-        // Exemplo: se o site for ludaslegal.com.br/cnae/7820500
-        const urlDestino = `/cnae/${codigoLimpo}`; 
-        
-        // Abre em uma nova aba
-        window.open(urlDestino, '_blank');
-    }
-
-    // Inicialização
-    document.addEventListener("DOMContentLoaded", () => {
-        renderizarLista(dados);
-    });
+    // Render inicial
+    renderizar(dados);
 </script>
 </body>
 </html>
