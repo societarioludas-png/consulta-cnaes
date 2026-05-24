@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNAEs Disponíveis - Ludas Legal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --blue-institutional: #0056b3;
+            --gray-text: #444444;
+            --gray-light: #666666;
+            --border-gray: #e8e8e8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: var(--gray-text);
+            font-family: 'Open Sans', sans-serif;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* =========================================================
+           LISTA
+        ========================================================= */
+
+        #tituloSecao {
+            font-size: 26px;
+            color: #444444;
+            font-weight: 300;
+            margin-bottom: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        #tituloSecao strong {
+            color: var(--blue-institutional);
+            font-weight: 700;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .btn-cat {
+            padding: 9px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border-gray);
+            background: #ffffff;
+            font-size: 13px;
+            color: var(--gray-light);
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-cat:hover {
+            border-color: #cccccc;
+        }
+
+        .btn-cat.ativo {
+            background: var(--blue-institutional);
+            color: white;
+            border-color: var(--blue-institutional);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            font-size: 15px;
+            margin-bottom: 30px;
+            outline: none;
+            background: white;
+        }
+
+        .search-box:focus {
+            border-color: #b3d7ff;
+        }
+
+        #lista {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .balao-ativid {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .balao-ativid:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+
+        .atividade-conteudo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .codigo-cnae {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0056b3;
+            letter-spacing: 0.4px;
+        }
+
+        .titulo-cnae {
+            font-size: 22px;
+            line-height: 1.4;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .subtitulo-cnae {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .badges-cnae {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 999px;
+            text-transform: uppercase;
+        }
+
+        .badge.anexo {
+            background: #eff6ff;
+            color: #0056b3;
+        }
+
+        .badge.mei {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .badge.vedado {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .badge.fator {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        /* =========================================================
+           PÁGINA CNAE
+        ========================================================= */
+
+        .btn-voltar {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 18px;
+            background: white;
+            border-radius: 999px;
+            border: 1px solid var(--border-gray);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .pagina-cnae {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .hero-cnae {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 40px;
+        }
+
+        .hero-topo {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .codigo-cnae-page {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0056b3;
+            text-transform: uppercase;
+        }
+
+        .titulo-page {
+            font-size: 38px;
+            line-height: 1.2;
+            color: #0f172a;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .descricao-page {
+            font-size: 18px;
+            color: #475569;
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        .badges-page {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .status-pill {
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-pill.sim {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .status-pill.nao {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .status-pill.fator {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .grid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 18px;
+            color: #0f172a;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .info-value.destaque {
+            color: #0056b3;
+        }
+
+        .parecer-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 32px;
+        }
+
+        .parecer-box h2 {
+            font-size: 24px;
+            margin-bottom: 18px;
+            color: #0f172a;
+        }
+
+        .parecer-box p {
+            font-size: 16px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .msg-estado {
+            padding: 20px 0;
+            color: var(--gray-light);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+
+            .titulo-page {
+                font-size: 28px;
+            }
+
+            .hero-cnae {
+                padding: 26px;
+            }
+
+            .titulo-cnae {
+                font-size: 18px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="telaLista">
+
+        <input
+            id="campoBusca"
+            class="search-box"
+            type="text"
+            placeholder="Digite palavras-chave ou o número do CNAE..."
+            oninput="filtrarGeral()"
+        >
+
+        <div class="filters">
+
+            <button class="btn-cat" onclick="toggleCategoria('Administrativo', this)">Administrativo</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Tecnologia', this)">Tecnologia</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Educação', this)">Educação</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Saúde', this)">Saúde</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Comércio', this)">Comércio</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Engenharia/Arq', this)">Engenharia/Arq</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Automotivo', this)">Automotivo</button>
+
+            <button class="btn-cat" onclick="toggleCategoria('Publicidade', this)">Publicidade/Eventos</button>
+
+        </div>
+
+        <h2 id="tituloSecao">CNAEs disponíveis</h2>
+
+        <div id="lista"></div>
+
+    </div>
+
+    <div id="telaDetalhes" style="display:none;">
+
+        <div class="btn-voltar" onclick="window.location.hash = ''">
+            ← Voltar para pesquisa
+        </div>
+
+        <div id="conteudoPaginaAtividade"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const dadosCnae = [
+
+    {
+        c: "8211-3/00",
+        d: "Serviços combinados de escritório e apoio administrativo",
+        sub: "Serviços de secretaria e rotinas administrativas estruturadas.",
+        regras: "Atividade ideal para prestadores de serviços de assistência virtual ou BPO financeiro.",
+        cat: "Administrativo",
+        anexo: "Anexo III",
+        aliq: "6%",
+        fatorR: false,
+        mei: true,
+        simples: true
+    },
+
+    {
+        c: "8219-9/99",
+        d: "Preparação de documentos e serviços especializados de apoio administrativo não especificados anteriormente",
+        sub: "Digitação, redação e suporte operacional.",
+        regras: "Permitido no MEI, ideal para formalização inicial desburocratizada.",
+        cat: "Administrativo",
+        anexo: "Anexo III",
+        aliq: "6%",
+        fatorR: false,
+        mei: true,
+        simples: true
+    },
+
+    {
+        c: "7820-5/00",
+        d: "Locação de mão de obra temporária",
+        sub: "Locação de pessoal temporário.",
+        regras: "Exige comprovação de Capital Social mínimo equivalente a 500 salários mínimos.",
+        cat: "Administrativo",
+        anexo: "Anexo IV",
+        aliq: "4,5%",
+        fatorR: false,
+        mei: false,
+        simples: true
+    },
+
+    {
+        c: "6201-5/01",
+        d: "Desenvolvimento de programas de computador sob encomenda",
+        sub: "Programação de sistemas e softwares.",
+        regras: "Sujeito ao Fator R. Pode reduzir tributação caso folha represente 28% do faturamento.",
+        cat: "Tecnologia",
+        anexo: "Anexo V",
+        aliq: "15,5%",
+        fatorR: true,
+        mei: false,
+        simples: true
+    },
+
+    {
+        c: "8630-5/99",
+        d: "Atividades de atenção ambulatorial não especificadas",
+        sub: "Clínicas gerais médicas.",
+        regras: "Exige CRM ativo e objeto social detalhado.",
+        cat: "Saúde",
+        anexo: "Anexo V",
+        aliq: "15,5%",
+        fatorR: true,
+        mei: false,
+        simples: true
+    },
+
+    {
+        c: "4321-5/00",
+        d: "Instalação e manutenção elétrica",
+        sub: "Automação predial e energia solar.",
+        regras: "Necessário registro ativo junto ao CREA ou CRT.",
+        cat: "Engenharia/Arq",
+        anexo: "Anexo III",
+        aliq: "6%",
+        fatorR: false,
+        mei: true,
+        simples: true
+    }
+
+];
+
+let categoriaAtiva = "";
+
+window.addEventListener("hashchange", roteador);
+
+document.addEventListener("DOMContentLoaded", () => {
+    filtrarGeral();
+    roteador();
+});
+
+function roteador() {
+
+    const hash = window.location.hash.replace("#", "");
+
+    if (hash) {
+        exibirPaginaAtividade(hash);
+    } else {
+        document.getElementById("telaDetalhes").style.display = "none";
+        document.getElementById("telaLista").style.display = "block";
+    }
+
+}
+
+function toggleCategoria(cat, elemento) {
+
+    if (categoriaAtiva === cat) {
+
+        categoriaAtiva = "";
+        elemento.classList.remove("ativo");
+
+        document.getElementById("tituloSecao").innerHTML =
+            "CNAEs disponíveis";
+
+    } else {
+
+        document.querySelectorAll(".btn-cat")
+            .forEach(b => b.classList.remove("ativo"));
+
+        categoriaAtiva = cat;
+
+        elemento.classList.add("ativo");
+
+        document.getElementById("tituloSecao").innerHTML =
+            `CNAEs disponíveis para: <strong>${cat}</strong>`;
+    }
+
+    filtrarGeral();
+}
+
+function normalizarTexto(t) {
+
+    return t.toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "");
+
+}
+
+function filtrarGeral() {
+
+    const buscaInput =
+        document.getElementById("campoBusca").value;
+
+    const termo = normalizarTexto(buscaInput);
+
+    const lista =
+        document.getElementById("lista");
+
+    const res = dadosCnae.filter(i => {
+
+        const matchTexto =
+            !termo ||
+            normalizarTexto(i.d).includes(termo) ||
+            normalizarTexto(i.c).includes(termo) ||
+            normalizarTexto(i.sub).includes(termo);
+
+        return matchTexto &&
+            (!categoriaAtiva || i.cat === categoriaAtiva);
+
+    });
+
+    if (res.length === 0) {
+
+        lista.innerHTML =
+            `<div class="msg-estado">Nenhuma atividade encontrada.</div>`;
+
+        return;
+    }
+
+    let htmlGerado = "";
+
+    res.forEach(i => {
+
+        htmlGerado += `
+
+        <div class="balao-ativid"
+             onclick="window.location.hash='${i.c}'">
+
+            <div class="atividade-conteudo">
+
+                <div class="codigo-cnae">
+                    ${i.c}
+                </div>
+
+                <div class="titulo-cnae">
+                    ${i.d}
+                </div>
+
+                <div class="subtitulo-cnae">
+                    ${i.sub}
+                </div>
+
+                <div class="badges-cnae">
+
+                    <span class="badge anexo">
+                        ${i.anexo}
+                    </span>
+
+                    ${
+                        i.mei
+                        ? `<span class="badge mei">MEI</span>`
+                        : `<span class="badge vedado">MEI Vedado</span>`
+                    }
+
+                    ${
+                        i.fatorR
+                        ? `<span class="badge fator">Fator R</span>`
+                        : ''
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+        `;
+    });
+
+    lista.innerHTML = htmlGerado;
+}
+
+function exibirPaginaAtividade(codigo) {
+
+    const cnae =
+        dadosCnae.find(item => item.c === codigo);
+
+    if (!cnae) {
+
+        window.location.hash = "";
+        return;
+    }
+
+    document.getElementById("telaLista").style.display = "none";
+
+    document.getElementById("telaDetalhes").style.display = "block";
+
+    const htmlPagina = `
+
+    <div class="pagina-cnae">
+
+        <div class="breadcrumb">
+            CNAEs / ${cnae.cat} / ${cnae.c}
+        </div>
+
+        <div class="hero-cnae">
+
+            <div class="hero-topo">
+
+                <div class="codigo-cnae-page">
+                    CNAE ${cnae.c}
+                </div>
+
+                <div class="badges-page">
+
+                    ${
+                        cnae.simples
+                        ? `<span class="status-pill sim">Simples Nacional</span>`
+                        : `<span class="status-pill nao">Fora do Simples</span>`
+                    }
+
+                    ${
+                        cnae.mei
+                        ? `<span class="status-pill sim">MEI Permitido</span>`
+                        : `<span class="status-pill nao">MEI Vedado</span>`
+                    }
+
+                    ${
+                        cnae.fatorR
+                        ? `<span class="status-pill fator">Fator R</span>`
+                        : ''
+                    }
+
+                </div>
+
+            </div>
+
+            <h1 class="titulo-page">
+                ${cnae.d}
+            </h1>
+
+            <p class="descricao-page">
+                ${cnae.sub}
+            </p>
+
+        </div>
+
+        <div class="grid-info">
+
+            <div class="info-card">
+                <div class="info-label">Categoria</div>
+                <div class="info-value">${cnae.cat}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Anexo Tributário</div>
+                <div class="info-value destaque">${cnae.anexo}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Alíquota Inicial</div>
+
+                <div class="info-value destaque">
+
+                    ${
+                        cnae.fatorR
+                        ? "15,5% (podendo reduzir para 6% via Fator R)"
+                        : cnae.aliq
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Enquadramento MEI</div>
+
+                <div class="info-value">
+                    ${cnae.mei ? "Permitido" : "Vedado"}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="parecer-box">
+
+            <h2>Parecer Consultivo</h2>
+
+            <p>
+                ${cnae.regras}
+            </p>
+
+        </div>
+
+    </div>
+
+    `;
+
+    document.getElementById("conteudoPaginaAtividade")
+        .innerHTML = htmlPagina;
+
+    window.scrollTo(0, 0);
+
+}
+
+</script>
+
+</body>
+</html>
